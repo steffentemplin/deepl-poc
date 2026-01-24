@@ -11,14 +11,12 @@ Implementation steps for the translator microservice POC.
 
 ## Phase 2: Local Development Infrastructure
 
-- [ ] Create Kind cluster configuration
-- [ ] Write setup script for Kind cluster
-- [ ] Deploy PostgreSQL to Kind (Helm or manifests)
-- [ ] Deploy Kafka to Kind (Strimzi operator or Helm)
-- [ ] Deploy Kafka Connect with JDBC Sink connector
-- [ ] Deploy Keycloak to Kind
-- [ ] Configure Keycloak realm "translator-app" with test users
-- [ ] Verify all infrastructure components are running
+- [X] Deploy PostgreSQL to Kind (Helm or manifests)
+- [X] Deploy Kafka to Kind (Strimzi operator or Helm)
+- [X] Deploy Kafka Connect with JDBC Sink connector
+- [X] Deploy Keycloak to Kind
+- [X] Configure Keycloak realm "translator-app" with test users
+- [X] Verify all infrastructure components are running
 
 ## Phase 3: Protobuf Definitions
 
@@ -114,11 +112,11 @@ Implementation steps for the translator microservice POC.
 
 ### Key Commands (to be filled in as we implement)
 ```bash
-# Start Kind cluster
-./scripts/setup-kind.sh
+# Deploy infrastructure (PostgreSQL, Kafka, Keycloak, Kafka Connect)
+./scripts/deploy-infra.sh
 
-# Deploy all infrastructure
-./scripts/deploy-all.sh
+# Configure Keycloak realm and test users
+./scripts/setup-keycloak.sh
 
 # Build all services
 npm run build --workspaces

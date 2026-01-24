@@ -1,0 +1,70 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: keycloak-realm
+  namespace: translator
+data:
+  translator-realm.json: |
+    {
+      "realm": "translator-app",
+      "enabled": true,
+      "registrationAllowed": true,
+      "registrationEmailAsUsername": true,
+      "loginWithEmailAllowed": true,
+      "sslRequired": "none",
+      "clients": [
+        {
+          "clientId": "translator-frontend",
+          "enabled": true,
+          "publicClient": true,
+          "directAccessGrantsEnabled": true,
+          "standardFlowEnabled": true,
+          "redirectUris": [
+            "http://localhost:3000/*",
+            "http://localhost:8080/*"
+          ],
+          "webOrigins": [
+            "http://localhost:3000",
+            "http://localhost:8080"
+          ],
+          "defaultClientScopes": [
+            "web-origins",
+            "profile",
+            "roles",
+            "email"
+          ]
+        }
+      ],
+      "users": [
+        {
+          "username": "testuser",
+          "email": "testuser@example.com",
+          "enabled": true,
+          "emailVerified": true,
+          "firstName": "Test",
+          "lastName": "User",
+          "credentials": [
+            {
+              "type": "password",
+              "value": "testpass",
+              "temporary": false
+            }
+          ]
+        },
+        {
+          "username": "demo",
+          "email": "demo@example.com",
+          "enabled": true,
+          "emailVerified": true,
+          "firstName": "Demo",
+          "lastName": "Account",
+          "credentials": [
+            {
+              "type": "password",
+              "value": "demo",
+              "temporary": false
+            }
+          ]
+        }
+      ]
+    }

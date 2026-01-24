@@ -202,8 +202,6 @@ deepl-poc/
 │   └── history.proto
 │
 ├── deploy/
-│   ├── kind/
-│   │   └── cluster-config.yaml
 │   └── k8s/
 │       ├── namespace.yaml
 │       ├── frontend/

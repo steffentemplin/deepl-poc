@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kafka-connect-config
+  namespace: translator
+data:
+  # JDBC Sink Connector configuration
+  jdbc-sink-connector.json: |
+    {
+      "name": "translation-history-sink",
+      "config": {
+        "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+        "tasks.max": "1",
+        "topics": "translations",
+        "connection.url": "jdbc:postgresql://postgres:5432/translator",
+        "connection.user": "translator",
+        "connection.password": "translator-secret",
+        "table.name.format": "translation_history",
+        "insert.mode": "insert",
+        "pk.mode": "none",
+        "auto.create": "false",
+        "auto.evolve": "false",
+        "key.converter": "org.apache.kafka.connect.storage.StringConverter",
+        "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+        "value.converter.schemas.enable": "false",
+        "transforms": "InsertUUID,InsertTimestamp",
+        "transforms.InsertUUID.type": "org.apache.kafka.connect.transforms.InsertField$Value",
+        "transforms.InsertUUID.static.field": "id",
+        "transforms.InsertUUID.static.value": "",
+        "transforms.InsertTimestamp.type": "org.apache.kafka.connect.transforms.InsertField$Value",
+        "transforms.InsertTimestamp.timestamp.field": "created_at"
+      }
+    }

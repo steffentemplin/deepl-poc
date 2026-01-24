@@ -1,0 +1,51 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: setup-jdbc-connector
+  namespace: translator
+spec:
+  backoffLimit: 10
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: setup-connector
+          image: curlimages/curl:8.6.0
+          command:
+            - /bin/sh
+            - -c
+            - |
+              echo "Waiting for Kafka Connect to be ready..."
+              until curl -s http://kafka-connect:8083/connectors > /dev/null 2>&1; do
+                echo "Kafka Connect not ready, waiting..."
+                sleep 5
+              done
+              echo "Kafka Connect is ready!"
+
+              # Check if connector already exists (404 = not found)
+              STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://kafka-connect:8083/connectors/translation-history-sink)
+
+              if [ "$STATUS" = "200" ]; then
+                echo "Connector already exists, deleting first..."
+                curl -X DELETE http://kafka-connect:8083/connectors/translation-history-sink
+                sleep 2
+              fi
+
+              echo "Creating connector..."
+              curl -X POST \
+                -H "Content-Type: application/json" \
+                --data @/etc/connectors/jdbc-sink-connector.json \
+                http://kafka-connect:8083/connectors
+
+              echo ""
+              echo "Connector setup complete!"
+              sleep 2
+              echo "Connector status:"
+              curl -s http://kafka-connect:8083/connectors/translation-history-sink/status
+          volumeMounts:
+            - name: connector-config
+              mountPath: /etc/connectors
+      volumes:
+        - name: connector-config
+          configMap:
+            name: kafka-connect-config

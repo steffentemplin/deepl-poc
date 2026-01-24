@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init
+  namespace: translator
+data:
+  init.sql: |
+    -- Translation history table (populated by Kafka Connect)
+    CREATE TABLE IF NOT EXISTS translation_history (
+        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+        user_id VARCHAR(255),
+        source_text TEXT NOT NULL,
+        translated_text TEXT NOT NULL,
+        source_language VARCHAR(10),
+        target_language VARCHAR(10) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+
+    CREATE INDEX IF NOT EXISTS idx_history_user_id ON translation_history(user_id);
+    CREATE INDEX IF NOT EXISTS idx_history_created_at ON translation_history(created_at DESC);
+
+    -- User preferences table
+    CREATE TABLE IF NOT EXISTS user_preferences (
+        user_id VARCHAR(255) PRIMARY KEY,
+        default_target_language VARCHAR(10) DEFAULT 'EN',
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
