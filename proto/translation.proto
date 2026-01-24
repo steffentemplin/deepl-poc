@@ -1,0 +1,4 @@
+syntax = "proto3";
+package translator;
+
+// To be implemented in Phase 3

@@ -1,0 +1,22 @@
+{
+  "name": "deepl-poc",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "services/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.x",
+    "eslint": "^9.x",
+    "prettier": "^3.x",
+    "typescript": "^5.x",
+    "typescript-eslint": "^8.x"
+  }
+}
