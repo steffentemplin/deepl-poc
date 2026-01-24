@@ -1,4 +1,29 @@
 syntax = "proto3";
+
 package translator;
 
-// To be implemented in Phase 3
+
+// TranslationService handles text translation requests
+service TranslationService {
+  // Translate text to the specified target language
+  // Source language is auto-detected by DeepL
+  rpc Translate(TranslateRequest) returns (TranslateResponse);
+}
+
+message TranslateRequest {
+  // Text to translate (required)
+  string text = 1;
+  // Target language code (e.g., "DE", "FR", "ES") (required)
+  string target_language = 2;
+  // User ID for history tracking (optional, empty for anonymous)
+  string user_id = 3;
+}
+
+message TranslateResponse {
+  // Translated text
+  string translated_text = 1;
+  // Detected source language code (e.g., "EN")
+  string detected_source_language = 2;
+  // Target language code
+  string target_language = 3;
+}

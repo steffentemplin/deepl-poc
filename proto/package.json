@@ -1,0 +1,31 @@
+{
+  "name": "@deepl-poc/proto",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./generated/index.js",
+      "types": "./generated/index.d.ts"
+    },
+    "./loader": {
+      "import": "./loader.js",
+      "types": "./loader.d.ts"
+    }
+  },
+  "files": [
+    "generated",
+    "loader.js",
+    "loader.d.ts",
+    "*.proto"
+  ],
+  "scripts": {
+    "clean": "rm -rf generated",
+    "generate": "npx proto-loader-gen-types --longs=String --enums=String --defaults --keepCase --oneofs --grpcLib=@grpc/grpc-js --outDir=generated translation.proto history.proto",
+    "postgenerate": "node scripts/create-index.js",
+    "build": "npm run clean && npm run generate"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.12.0",
+    "@grpc/proto-loader": "^0.8.0"
+  }
+}

@@ -4,8 +4,9 @@ node_modules/
 # Build outputs
 dist/
 build/
-*.js.map
-*.d.ts
+
+# Proto generated files (regenerated on build)
+proto/generated/
 
 # Environment
 .env
