@@ -1,4 +1,77 @@
 syntax = "proto3";
+
 package translator;
 
-// To be implemented in Phase 3
+option go_package = "github.com/deepl-poc/proto/translator";
+
+import "google/protobuf/timestamp.proto";
+
+// HistoryService manages translation history and user preferences
+service HistoryService {
+  // Get translation history for a user
+  rpc GetHistory(GetHistoryRequest) returns (GetHistoryResponse);
+
+  // Get user preferences
+  rpc GetPreferences(GetPreferencesRequest) returns (GetPreferencesResponse);
+
+  // Update user preferences
+  rpc SetPreferences(SetPreferencesRequest) returns (SetPreferencesResponse);
+}
+
+message GetHistoryRequest {
+  // User ID (required)
+  string user_id = 1;
+  // Maximum number of entries to return (default: 50)
+  int32 limit = 2;
+  // Offset for pagination (default: 0)
+  int32 offset = 3;
+}
+
+message GetHistoryResponse {
+  // List of translation history entries
+  repeated TranslationEntry entries = 1;
+  // Total count of entries (for pagination)
+  int32 total_count = 2;
+}
+
+message TranslationEntry {
+  // Unique identifier
+  string id = 1;
+  // Original text
+  string source_text = 2;
+  // Translated text
+  string translated_text = 3;
+  // Detected source language code
+  string source_language = 4;
+  // Target language code
+  string target_language = 5;
+  // Timestamp when translation was created
+  google.protobuf.Timestamp created_at = 6;
+}
+
+message GetPreferencesRequest {
+  // User ID (required)
+  string user_id = 1;
+}
+
+message GetPreferencesResponse {
+  // User preferences
+  UserPreferences preferences = 1;
+}
+
+message SetPreferencesRequest {
+  // User ID (required)
+  string user_id = 1;
+  // Preferences to set
+  UserPreferences preferences = 2;
+}
+
+message SetPreferencesResponse {
+  // Updated preferences
+  UserPreferences preferences = 1;
+}
+
+message UserPreferences {
+  // Default target language code (e.g., "EN", "DE")
+  string default_target_language = 1;
+}

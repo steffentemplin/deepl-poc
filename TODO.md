@@ -20,10 +20,10 @@ Implementation steps for the translator microservice POC.
 
 ## Phase 3: Protobuf Definitions
 
-- [ ] Define translation.proto (Translate RPC)
-- [ ] Define history.proto (GetHistory, GetPreferences RPCs)
-- [ ] Set up protobuf code generation for TypeScript
-- [ ] Generate TypeScript types and gRPC stubs
+- [X] Define translation.proto (Translate RPC)
+- [X] Define history.proto (GetHistory, GetPreferences RPCs)
+- [X] Set up protobuf code generation for TypeScript
+- [X] Generate TypeScript types and gRPC stubs
 
 ## Phase 4: Translation Service
 
