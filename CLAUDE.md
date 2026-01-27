@@ -34,6 +34,10 @@ scripts/            # Setup and deployment scripts
 
 *Commands will be documented as services are implemented.*
 
+## Container Runtime
+
+Use **Podman** (not Docker) for all container operations.
+
 ## Architecture Notes
 
 - API Gateway is the only externally exposed service
