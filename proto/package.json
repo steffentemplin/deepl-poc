@@ -10,6 +10,12 @@
     "./loader": {
       "import": "./loader.js",
       "types": "./loader.d.ts"
+    },
+    "./translator/*": {
+      "types": "./generated/translator/*.ts"
+    },
+    "./google/*": {
+      "types": "./generated/google/*/*.ts"
     }
   },
   "files": [

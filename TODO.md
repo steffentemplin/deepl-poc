@@ -27,13 +27,13 @@ Implementation steps for the translator microservice POC.
 
 ## Phase 4: Translation Service
 
-- [ ] Initialize Node.js project with TypeScript
-- [ ] Implement gRPC server skeleton
-- [ ] Implement DeepL API client
-- [ ] Implement Kafka producer
-- [ ] Implement Translate handler (DeepL call + Kafka publish)
-- [ ] Write Dockerfile
-- [ ] Write Kubernetes manifests (Deployment, Service)
+- [X] Initialize Node.js project with TypeScript
+- [X] Implement gRPC server skeleton
+- [X] Implement DeepL API client
+- [X] Implement Kafka producer
+- [X] Implement Translate handler (DeepL call + Kafka publish)
+- [X] Write Dockerfile
+- [X] Write Kubernetes manifests (Deployment, Service)
 - [ ] Test locally with grpcurl
 
 ## Phase 5: History Service
