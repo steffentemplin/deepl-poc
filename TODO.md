@@ -35,7 +35,7 @@ Implementation steps for the translator microservice POC.
 - [X] Write Dockerfile
 - [X] Write Kubernetes manifests (Deployment, Service)
 - [X] Test locally with grpcurl
-- [ ] Add GetSupportedLanguages RPC to expose DeepL's supported target languages (avoids bare "EN" issue; frontend can populate language dropdown dynamically)
+- [X] Add GetSupportedLanguages RPC to expose DeepL's supported target languages (avoids bare "EN" issue; frontend can populate language dropdown dynamically)
 
 ## Phase 5: History Service
 

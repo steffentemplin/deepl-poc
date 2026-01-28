@@ -8,6 +8,8 @@ service TranslationService {
   // Translate text to the specified target language
   // Source language is auto-detected by DeepL
   rpc Translate(TranslateRequest) returns (TranslateResponse);
+  // Get supported target languages from DeepL
+  rpc GetSupportedLanguages(GetSupportedLanguagesRequest) returns (GetSupportedLanguagesResponse);
 }
 
 message TranslateRequest {
@@ -17,6 +19,19 @@ message TranslateRequest {
   string target_language = 2;
   // User ID for history tracking (optional, empty for anonymous)
   string user_id = 3;
+}
+
+message GetSupportedLanguagesRequest {}
+
+message GetSupportedLanguagesResponse {
+  repeated Language languages = 1;
+}
+
+message Language {
+  // Language code (e.g., "DE", "FR", "ES")
+  string code = 1;
+  // Language name (e.g., "German", "French", "Spanish")
+  string name = 2;
 }
 
 message TranslateResponse {

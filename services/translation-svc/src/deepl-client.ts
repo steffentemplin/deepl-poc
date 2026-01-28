@@ -10,6 +10,26 @@ export function initDeepLClient(): void {
   translator = new deepl.Translator(config.deepl.apiKey);
 }
 
+export interface SupportedLanguage {
+  code: string;
+  name: string;
+}
+
+/**
+ * Get supported target languages from DeepL API
+ */
+export async function getTargetLanguages(): Promise<SupportedLanguage[]> {
+  if (!translator) {
+    throw new Error('DeepL client not initialized');
+  }
+
+  const languages = await translator.getTargetLanguages();
+  return languages.map((lang) => ({
+    code: lang.code,
+    name: lang.name,
+  }));
+}
+
 export interface TranslationResult {
   translatedText: string;
   detectedSourceLanguage: string;

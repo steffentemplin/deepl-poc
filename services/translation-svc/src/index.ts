@@ -8,6 +8,7 @@ import {
   disconnectKafkaProducer,
 } from './kafka-producer.js';
 import { handleTranslate } from './handlers/translate.js';
+import { handleGetSupportedLanguages } from './handlers/get-supported-languages.js';
 
 /**
  * Start the gRPC server
@@ -29,6 +30,7 @@ async function startServer(): Promise<void> {
   // Register service handlers
   const handlers: TranslationServiceHandlers = {
     Translate: handleTranslate,
+    GetSupportedLanguages: handleGetSupportedLanguages,
   };
 
   server.addService(proto.translator.TranslationService.service, handlers);
