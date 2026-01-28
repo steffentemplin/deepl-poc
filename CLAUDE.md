@@ -38,6 +38,10 @@ scripts/            # Setup and deployment scripts
 
 Use **Podman** (not Docker) for all container operations.
 
+## Container Images
+
+Use official **Apache** images (e.g., `docker.io/apache/kafka`) — not Bitnami. Bitnami images are deprecated/unavailable.
+
 ## Architecture Notes
 
 - API Gateway is the only externally exposed service
