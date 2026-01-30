@@ -40,24 +40,24 @@ Implementation steps for the translator microservice POC.
 
 ## Phase 5: Webapp + Frontend
 
-- [ ] Initialize Node.js project with TypeScript + Express
-- [ ] Implement gRPC client for Translation Service
-- [ ] Implement Keycloak JWT validation middleware
-- [ ] Implement REST endpoints:
-  - [ ] POST /api/translate
-  - [ ] GET /api/languages
-- [ ] Create frontend HTML structure (index.html)
-- [ ] Style with CSS (responsive, accessible)
-- [ ] Implement frontend TypeScript application:
-  - [ ] Keycloak JS adapter integration (login/logout)
-  - [ ] Fetch and populate target language dropdown
-  - [ ] Translation form handling
-  - [ ] API client
-- [ ] Set up frontend build process (esbuild or tsc)
-- [ ] Serve built frontend as static files from Express
-- [ ] Write Dockerfile
-- [ ] Write Kubernetes manifests (Deployment, Service, Ingress)
-- [ ] Test with curl and browser
+- [X] Initialize Node.js project with TypeScript + Express
+- [X] Implement gRPC client for Translation Service
+- [X] Implement Keycloak JWT validation middleware
+- [X] Implement REST endpoints:
+  - [X] POST /api/translate
+  - [X] GET /api/languages
+- [X] Create frontend HTML structure (index.html)
+- [X] Style with CSS (responsive, accessible)
+- [X] Implement frontend TypeScript application:
+  - [X] Keycloak JS adapter integration (login/logout)
+  - [X] Fetch and populate target language dropdown
+  - [X] Translation form handling
+  - [X] API client
+- [X] Set up frontend build process (esbuild or tsc)
+- [X] Serve built frontend as static files from Express
+- [X] Write Dockerfile
+- [X] Write Kubernetes manifests (Deployment, Service, Ingress)
+- [X] Test with curl and browser
 
 ## Phase 6: Integration & Deployment
 

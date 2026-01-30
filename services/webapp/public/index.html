@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Translator</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header>
+    <h1>Translator</h1>
+    <div id="auth-area">
+      <button id="login-btn" class="btn btn-outline" hidden>Login</button>
+      <span id="user-info" hidden>
+        <span id="username"></span>
+        <button id="logout-btn" class="btn btn-outline">Logout</button>
+      </span>
+    </div>
+  </header>
+
+  <main>
+    <form id="translate-form">
+      <div class="form-group">
+        <label for="source-text">Text to translate</label>
+        <textarea id="source-text" rows="5" placeholder="Enter text…" required></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="target-language">Target language</label>
+          <select id="target-language" required>
+            <option value="">Loading…</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary" id="translate-btn">Translate</button>
+      </div>
+    </form>
+
+    <div id="result" hidden>
+      <h2>Translation</h2>
+      <p id="detected-language"></p>
+      <div id="translated-text"></div>
+    </div>
+
+    <div id="error" class="error" hidden></div>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp
+  namespace: translator
+  labels:
+    app: webapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+      containers:
+        - name: webapp
+          image: webapp:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          env:
+            - name: PORT
+              value: "8080"
+            - name: TRANSLATION_SVC_ADDRESS
+              value: "translation-svc.translator.svc.cluster.local:50051"
+            - name: KEYCLOAK_ISSUER
+              value: "http://keycloak.translator.svc.cluster.local:8080/realms/translator"
+            - name: KEYCLOAK_JWKS_URI
+              value: "http://keycloak.translator.svc.cluster.local:8080/realms/translator/protocol/openid-connect/certs"
+            - name: KEYCLOAK_URL
+              value: "http://keycloak.translator.svc.cluster.local:8080"
+            - name: KEYCLOAK_REALM
+              value: "translator"
+            - name: KEYCLOAK_CLIENT_ID
+              value: "translator-frontend"
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 5
