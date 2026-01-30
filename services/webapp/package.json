@@ -1,5 +1,5 @@
 {
-  "name": "@deepl-poc/api-gateway",
+  "name": "@deepl-poc/webapp",
   "version": "0.0.0",
   "private": true,
   "type": "module",

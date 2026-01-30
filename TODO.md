@@ -38,62 +38,49 @@ Implementation steps for the translator microservice POC.
 - [X] Add GetSupportedLanguages RPC to expose DeepL's supported target languages (avoids bare "EN" issue; frontend can populate language dropdown dynamically)
 - [X] Add integration tests for gRPC interface (Translate + GetSupportedLanguages RPCs)
 
-## Phase 5: History Service
-
-- [ ] Initialize Node.js project with TypeScript
-- [ ] Implement gRPC server skeleton
-- [ ] Implement PostgreSQL client (connection pool)
-- [ ] Implement GetHistory handler
-- [ ] Implement GetPreferences / SetPreferences handlers
-- [ ] Write Dockerfile
-- [ ] Write Kubernetes manifests
-- [ ] Test locally with grpcurl
-
-## Phase 6: Kafka Connect Configuration
-
-- [ ] Create JDBC Sink connector configuration
-- [ ] Map Kafka message schema to PostgreSQL table
-- [ ] Deploy connector to Kafka Connect
-- [ ] Test end-to-end: produce message → verify in PostgreSQL
-
-## Phase 7: API Gateway
+## Phase 5: Webapp + Frontend
 
 - [ ] Initialize Node.js project with TypeScript + Express
-- [ ] Implement gRPC clients for Translation and History services
+- [ ] Implement gRPC client for Translation Service
 - [ ] Implement Keycloak JWT validation middleware
 - [ ] Implement REST endpoints:
   - [ ] POST /api/translate
-  - [ ] GET /api/history
-  - [ ] GET /api/preferences
-  - [ ] PUT /api/preferences
-- [ ] Implement rate limiting middleware
+  - [ ] GET /api/languages
+- [ ] Create frontend HTML structure (index.html)
+- [ ] Style with CSS (responsive, accessible)
+- [ ] Implement frontend TypeScript application:
+  - [ ] Keycloak JS adapter integration (login/logout)
+  - [ ] Fetch and populate target language dropdown
+  - [ ] Translation form handling
+  - [ ] API client
+- [ ] Set up frontend build process (esbuild or tsc)
+- [ ] Serve built frontend as static files from Express
 - [ ] Write Dockerfile
 - [ ] Write Kubernetes manifests (Deployment, Service, Ingress)
-- [ ] Test with curl
+- [ ] Test with curl and browser
 
-## Phase 8: Frontend
-
-- [ ] Create HTML structure (index.html)
-- [ ] Style with CSS (responsive, accessible)
-- [ ] Implement TypeScript application:
-  - [ ] Translation form handling
-  - [ ] API client for gateway
-  - [ ] Keycloak JS adapter integration
-  - [ ] History view (authenticated users)
-- [ ] Set up simple build process (esbuild or tsc)
-- [ ] Write Dockerfile (nginx or simple Node server)
-- [ ] Write Kubernetes manifests
-
-## Phase 9: Integration & Deployment
+## Phase 6: Integration & Deployment
 
 - [ ] Create deploy-all.sh script for full stack deployment
 - [ ] Configure Kubernetes secrets (DeepL API key, DB credentials)
 - [ ] Set up Ingress controller in Kind
-- [ ] Configure Ingress routes for Frontend and API Gateway
+- [ ] Configure Ingress routes
 - [ ] End-to-end testing of full flow
 - [ ] Document local development workflow in CLAUDE.md
 
-## Phase 10: Polish & Documentation
+## Phase 7: History Service & UI
+
+- [ ] Initialize history-svc Node.js project with TypeScript
+- [ ] Implement gRPC server (GetHistory, GetPreferences/SetPreferences)
+- [ ] Implement PostgreSQL client (connection pool)
+- [ ] Write Dockerfile and Kubernetes manifests
+- [ ] Configure Kafka Connect JDBC Sink connector
+- [ ] Add gRPC client for History Service to Webapp
+- [ ] Add REST endpoints: GET /api/history, GET/PUT /api/preferences
+- [ ] Add history view to frontend (authenticated users)
+- [ ] End-to-end test: translate → Kafka → PostgreSQL → history UI
+
+## Phase 8: Polish & Documentation
 
 - [ ] Add health check endpoints to all services
 - [ ] Add readiness/liveness probes to Kubernetes manifests
@@ -106,8 +93,7 @@ Implementation steps for the translator microservice POC.
 ## Quick Reference
 
 ### Infrastructure URLs (Local Kind)
-- Frontend: http://localhost:3000
-- API Gateway: http://localhost:8080
+- Webapp: http://localhost:8080
 - Keycloak: http://localhost:8180
 - PostgreSQL: localhost:5432
 - Kafka: localhost:9092

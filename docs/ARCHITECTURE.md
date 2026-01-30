@@ -10,21 +10,13 @@ Users visit a web application to translate text. They enter text, select a targe
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                                  Frontend                                    │
-│                            (HTML + CSS + TS)                                │
-│                              Port: 3000                                      │
-└─────────────────────────────────────────────────────────────────────────────┘
-                                      │
-                                      │ REST/HTTP
-                                      ▼
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                               API Gateway                                    │
+│                               Webapp                                    │
 │                    (Node.js + TypeScript + Express)                         │
 │                              Port: 8080                                      │
 │                                                                              │
+│                      - Serves static frontend (HTML+CSS+JS)                │
 │                      - JWT validation (Keycloak)                            │
-│                      - Request routing                                       │
-│                      - Rate limiting                                         │
+│                      - REST API routing                                      │
 └─────────────────────────────────────────────────────────────────────────────┘
                           │                    │
                      gRPC │                    │ gRPC
@@ -74,24 +66,20 @@ Users visit a web application to translate text. They enter text, select a targe
 
 ## Services
 
-### Frontend
-- **Technology:** Vanilla HTML + CSS + TypeScript (no framework)
-- **Purpose:** Simple, accessible UI for text translation
-- **Features:**
+### Webapp (+ Frontend)
+- **Technology:** Node.js 24 + TypeScript + Express; Vanilla HTML + CSS + TypeScript frontend
+- **Purpose:** Single externally-exposed service — serves the frontend UI and provides the REST API
+- **Responsibilities:**
+  - Serve static frontend assets (HTML, CSS, JS)
+  - JWT token validation via Keycloak public keys
+  - Route requests to appropriate backend services via gRPC
+  - Request/response transformation (REST ↔ gRPC)
+- **Frontend features:**
   - Text input area
   - Target language dropdown
   - Translation result display
   - Login/logout via Keycloak
   - Translation history view (authenticated users)
-
-### API Gateway
-- **Technology:** Node.js 24 + TypeScript + Express
-- **Purpose:** Single entry point for frontend, handles cross-cutting concerns
-- **Responsibilities:**
-  - JWT token validation via Keycloak public keys
-  - Route requests to appropriate backend services via gRPC
-  - Rate limiting to prevent abuse
-  - Request/response transformation (REST ↔ gRPC)
 
 ### Translation Service
 - **Technology:** Node.js 24 + TypeScript + gRPC
@@ -121,14 +109,14 @@ Users visit a web application to translate text. They enter text, select a targe
 ## Data Flow
 
 ### Translation Request
-1. User enters text and selects target language in Frontend
-2. Frontend sends POST to API Gateway `/api/translate`
-3. API Gateway validates JWT (if present, for history tracking)
-4. API Gateway calls Translation Service via gRPC `Translate()`
+1. User enters text and selects target language in the frontend
+2. Frontend sends POST to `/api/translate`
+3. Webapp validates JWT (if present, for history tracking)
+4. Webapp calls Translation Service via gRPC `Translate()`
 5. Translation Service calls DeepL API
 6. Translation Service publishes event to Kafka `translations` topic
 7. Translation Service returns result via gRPC
-8. API Gateway returns JSON response to Frontend
+8. Webapp returns JSON response
 9. Frontend displays translation
 
 ### History Persistence (Async)
@@ -137,12 +125,12 @@ Users visit a web application to translate text. They enter text, select a targe
 3. No application code involved - fully managed by Kafka Connect
 
 ### View History
-1. User clicks "History" in Frontend
-2. Frontend sends GET to API Gateway `/api/history`
-3. API Gateway validates JWT (required)
-4. API Gateway calls History Service via gRPC `GetHistory()`
+1. User clicks "History" in the frontend
+2. Frontend sends GET to `/api/history`
+3. Webapp validates JWT (required)
+4. Webapp calls History Service via gRPC `GetHistory()`
 5. History Service queries PostgreSQL
-6. Results returned through the chain to Frontend
+6. Results returned through the chain to frontend
 
 ## Technology Choices
 
@@ -163,20 +151,16 @@ Users visit a web application to translate text. They enter text, select a targe
 ```
 deepl-poc/
 ├── services/
-│   ├── frontend/              # Static HTML+CSS+TS, served by simple HTTP server
-│   │   ├── src/
-│   │   │   ├── index.html
-│   │   │   ├── styles.css
-│   │   │   └── app.ts
-│   │   ├── package.json
-│   │   └── Dockerfile
-│   │
-│   ├── api-gateway/           # Express server, gRPC clients
+│   ├── webapp/           # Express server, gRPC clients, serves frontend
 │   │   ├── src/
 │   │   │   ├── index.ts
 │   │   │   ├── routes/
 │   │   │   ├── middleware/
 │   │   │   └── grpc-clients/
+│   │   ├── public/            # Frontend source (HTML+CSS+TS)
+│   │   │   ├── index.html
+│   │   │   ├── styles.css
+│   │   │   └── app.ts
 │   │   ├── package.json
 │   │   └── Dockerfile
 │   │
@@ -204,8 +188,7 @@ deepl-poc/
 ├── deploy/
 │   └── k8s/
 │       ├── namespace.yaml
-│       ├── frontend/
-│       ├── api-gateway/
+│       ├── webapp/
 │       ├── translation-svc/
 │       ├── history-svc/
 │       ├── kafka/
@@ -272,7 +255,7 @@ CREATE TABLE user_preferences (
 ## Security Considerations
 
 - All service-to-service communication is internal to the Kubernetes cluster
-- Only API Gateway is exposed externally
+- Only Webapp is exposed externally
 - JWT tokens are validated against Keycloak's public keys (no shared secrets)
 - DeepL API key stored as Kubernetes Secret
 - PostgreSQL credentials stored as Kubernetes Secret

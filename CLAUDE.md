@@ -23,7 +23,7 @@ See [TODO.md](TODO.md) for implementation progress.
 ## Project Structure
 
 ```
-services/           # Microservices (frontend, api-gateway, translation-svc, history-svc)
+services/           # Microservices (webapp incl. frontend, translation-svc, history-svc)
 proto/              # Shared protobuf definitions
 deploy/k8s/         # Kubernetes manifests
 deploy/kind/        # Kind cluster configuration
@@ -44,7 +44,7 @@ Use official **Apache** images (e.g., `docker.io/apache/kafka`) — not Bitnami.
 
 ## Architecture Notes
 
-- API Gateway is the only externally exposed service
+- Webapp is the only externally exposed service; it also serves the frontend as static files
 - Translation Service calls DeepL and publishes to Kafka
 - Kafka Connect (JDBC Sink) persists events to PostgreSQL automatically
 - History Service reads from PostgreSQL only (no Kafka consumer)
